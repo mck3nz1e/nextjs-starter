@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.github-env }}
-      url: "http://${{ steps.get-env-cname}}"
+      url: "http://${{ steps.get-env-cname.outputs.aws_env_cname}}"
     steps:
       - name: Avoid deploying to production using a non production env
         if: inputs.aws-env == vars.AWS_EB_PRODUCTION_ENV && inputs.github-env != 'production'
