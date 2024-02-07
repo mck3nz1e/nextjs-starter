@@ -6,12 +6,19 @@ on:
         description: "AWS Elastic Beanstalk Environment"
         required: true
         default: "staging"
-        type: string
+        type: choice
+        options:
+          - staging
+          - production
+
       github-env:
         description: "GitHub Environment"
         required: true
         default: "staging"
-        type: string
+        type: choice
+        options:
+          - staging
+          - production
 
   workflow_call:
     inputs:
