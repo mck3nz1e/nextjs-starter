@@ -1,5 +1,5 @@
 import Link from "next/link";
-import flagsmith from "./utils/flagsmith"
+import flagsmith from "./utils/flagsmith";
 
 export const revalidate = 0;
 
