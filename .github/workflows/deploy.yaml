@@ -5,7 +5,7 @@ on:
       aws-env:
         description: "AWS Elastic Beanstalk Environment"
         required: true
-        default: "gha-course-staging"
+        default: "staging"
         type: string
 
       github-env:
