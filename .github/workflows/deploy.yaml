@@ -63,6 +63,8 @@ jobs:
         run: npm ci
 
       - name: Build App
+        env:
+          FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }}
         run: npm run build
 
       - uses: actions/cache@v3
