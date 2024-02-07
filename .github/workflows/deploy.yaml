@@ -5,20 +5,14 @@ on:
       aws-env:
         description: "AWS Elastic Beanstalk Environment"
         required: true
-        default: "staging"
-        type: choice
-        options:
-          - staging
-          - production
+        default: "gha-course-staging"
+        type: string
 
       github-env:
-        description: "GitHub Environment"
+        description: "Github Environment"
         required: true
         default: "staging"
-        type: choice
-        options:
-          - staging
-          - production
+        type: string
 
   workflow_call:
     inputs:
