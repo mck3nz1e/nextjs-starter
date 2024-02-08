@@ -8,6 +8,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-tests:
+  run-tests: # Runs tests using resuable test workflow on all PR's to main
     uses: ./.github/workflows/test.yaml
     secrets: inherit

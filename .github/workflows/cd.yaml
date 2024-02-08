@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Create Version PR or GitHub Release
+      - name: Create Version PR or GitHub Release # Creates a PR with all changelogs updated and adds a comment to the PR
         id: changesets
         uses: changesets/action@v1
         with:
@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CHANGESETS_TOKEN }}
       - run: echo '${{ toJson(steps.changesets.outputs) }}'
 
-      - name: Send a Slack Message for Version PR Updates
+      - name: Send a Slack Message for Version PR Updates # If the version has been bumped notify slack channel to start a release with a link to the PR
         if: steps.changesets.outputs.pullRequestNumber
         uses: slackapi/slack-github-action@v1.24.0
         with:
@@ -57,12 +57,12 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-      - name: Set Release Version
+      - name: Set Release Version # Gets the release version for use in other steps
         if: steps.changesets.outputs.published == 'true'
         id: get-version
         run: echo "version=${{ fromJson(steps.changesets.outputs.publishedPackages)[0].version }}" >> $GITHUB_OUTPUT
 
-      - name: Send a Slack Message when a New Release is Created
+      - name: Send a Slack Message when a New Release is Created # Notify slack channel when RC begins deployment with a link to release page
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v1.24.0
         with:
@@ -81,13 +81,13 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-  run-tests:
+  run-tests: # Calls the reusable test workflow and runs unit and e2e tests
     needs: create-version-pr-or-release
     if: needs.create-version-pr-or-release.outputs.should-deploy == 'true'
     uses: ./.github/workflows/test.yaml
     secrets: inherit
 
-  deploy-to-staging:
+  deploy-to-staging: # Calls the reusable deploy workflow with staging env variables
     needs: run-tests
     permissions:
       pull-requests: write
@@ -97,7 +97,7 @@ jobs:
       aws-env: ${{ vars.AWS_EB_STAGING_ENV }}
       github-env: "staging"
 
-  deploy-to-production:
+  deploy-to-production: # Calls the reusable deploy workflow with production env variables
     needs: run-tests
     permissions:
       pull-requests: write

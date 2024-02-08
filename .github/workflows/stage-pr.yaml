@@ -10,7 +10,7 @@ jobs:
       actions: write
     if: github.event.issue.pull_request && github.event.issue.state == 'open' && github.event.comment.body == '/deploy'
     steps:
-      - name: Get Pull Request Head Ref
+      - name: Get Pull Request Head Ref # Gets the PR number
         id: get-head-ref
         uses: actions/github-script@v6
         with:
@@ -24,7 +24,7 @@ jobs:
             console.log(response.data)
             return response.data.head.ref
 
-      - name: Trigger a Branch Deploy
+      - name: Trigger a Branch Deploy # Invokes the deploy dispatch_workflow with the staging inputs and creates an aws-env with the PR number
         uses: actions/github-script@v6
         with:
           script: |
