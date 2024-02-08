@@ -34,7 +34,7 @@ jobs:
                 workflow_id: "deploy.yaml",
                 ref: "${{ steps.get-head-ref.outputs.result }}",
                 inputs: {
-                 "aws-env": `nextjs-starter-${context.issue.number}`,
+                 "aws-env": `pull-request-${context.issue.number}`,
                  "github-env": "staging",
                  "report-pr": `${context.issue.number}`
                 }
