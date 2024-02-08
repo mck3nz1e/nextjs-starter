@@ -1,5 +1,11 @@
 # mck3nz1e-next-app
 
+## 0.3.0
+
+### Minor Changes
+
+- ec5ff33: updated workflows
+
 ## 0.2.0
 
 ### Minor Changes
