@@ -6,7 +6,7 @@ on:
     types: [closed]
 
 jobs:
-  destroy-pr-env:
+  destroy-pr-env: # Only run if comment is on a pr and is open and the comment is /destroy
     if: (github.event.issue.pull_request && github.event.issue.state == 'open' && github.event.comment.body == '/destroy') || github.event_name == 'pull_request_target'
     runs-on: ubuntu-latest
     permissions:
@@ -24,6 +24,7 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip
+
       - name: Install EB CLI
         id: install-eb-cli
         run: pip install awsebcli
