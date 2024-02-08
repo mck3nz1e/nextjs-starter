@@ -10,6 +10,7 @@ export default async function Home() {
       <div>
         <h2>Hello World</h2>
         <p>This is a test</p>
+        <p>This is also a test</p>
       </div>
       <Link href="/about">About</Link>
       <br />
