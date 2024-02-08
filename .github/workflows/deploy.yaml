@@ -6,19 +6,13 @@ on:
         description: "AWS Elastic Beanstalk Environment"
         required: true
         default: "staging"
-        type: choice
-        options:
-          - staging
-          - production
+        type: string
 
       github-env:
         description: "Github Environment"
         required: true
         default: "staging"
-        type: choice
-        options:
-          - staging
-          - production
+        type: string
 
       report-pr:
         description: "PR to add report comments to"
