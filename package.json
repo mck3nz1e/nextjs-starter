@@ -1,5 +1,5 @@
 {
-  "name": "next-1",
+  "name": "mck3nz1e-next-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@changesets/cli": "^2.27.1",
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
