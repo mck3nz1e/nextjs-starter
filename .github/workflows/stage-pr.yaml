@@ -28,14 +28,15 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const response = await github.rest.actions.createWorkflowDispatch
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: "deploy.yaml"
-            ref: "${{ steps.get-head-ref.outputs.result }}"
-            inputs: {
-              "aws-env": `nextjs-starter-${context.issue.number}`
-              "github-env": "staging",
-              "report-pr": `${context.issue.number}`
-            }
+            const response = await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: "deploy.yaml"
+                ref: "${{ steps.get-head-ref.outputs.result }}"
+                inputs: {
+                    "aws-env": `nextjs-starter-${context.issue.number}`
+                    "github-env": "staging",
+                    "report-pr": `${context.issue.number}`
+                }
+            )}
             console.log(response)
