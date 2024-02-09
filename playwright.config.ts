@@ -10,6 +10,9 @@ export default defineConfig({
       "html",
       {
         open: "never",
+        outputFolder: `playwright-report/report-${date[Symbol.toPrimitive](
+          "number",
+        )}`,
       },
     ],
   ],
