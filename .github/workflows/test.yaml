@@ -73,7 +73,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-local
           path: playwright-report/
 
       - name: Send a Slack Message on Failure # Notify slack channel if workflow fails with a link to the workflow

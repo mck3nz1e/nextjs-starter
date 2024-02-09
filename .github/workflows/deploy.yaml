@@ -229,10 +229,10 @@ jobs:
         run: npm run test:e2e
         env:
           FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }} # For feature flagging
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-deployed
           path: playwright-report/
 
       - name: Send a Slack Message on Failure # Notify slack channel if workflow fails with a link to the workflow
