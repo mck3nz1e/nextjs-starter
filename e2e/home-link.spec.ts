@@ -1,9 +1,13 @@
 import { test, expect } from "@playwright/test";
-import { testUrls } from "./urls";
 
 test.describe("App Home Page", () => {
   test.beforeEach(async ({ page }) => {
-    const url = (testUrls as any)[process.env.aws_env_cname || "local"];
+    const awsEnvCname = process.env._aws_env_cname;
+    const url =
+      awsEnvCname === "staging" || awsEnvCname === "development"
+        ? awsEnvCname
+        : "http://localhost:3000";
+
     await page.goto(url);
   });
 
