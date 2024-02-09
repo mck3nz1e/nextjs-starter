@@ -107,6 +107,27 @@ jobs:
               body: comment
             })
 
+      - name: Send a Slack Message on Failure # Notify slack channel if workflow fails with a link to the workflow
+        uses: slackapi/slack-github-action@v1.24.0
+        if: failure() && steps.check-env.outputs.should_terminate == 'true'
+        continue-on-error: true
+        with:
+          payload: |
+            {
+             "blocks": [
+               {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "🛑 *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} workflow run>* failed. Environment Termination Failed."
+                 }
+               }
+             ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
       - name: Update Pull Request (Success) # Adds a comment to the PR when the step to terminate the eb env succeeds
         uses: actions/github-script@v6
         if: success() && steps.check-env.outputs.should_terminate == 'true'

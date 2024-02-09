@@ -1,4 +1,4 @@
-[![CI](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/ci.yaml/badge.svg)](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/ci.yaml)
+[![CI](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/ci.yaml/badge.svg)](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/ci.yaml) [![CD](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/cd.yaml/badge.svg)](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/cd.yaml) [![CodeQL](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/github-code-scanning/codeql) [![Deploy](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/deploy.yaml/badge.svg)](https://github.com/mck3nz1e/nextjs-starter/actions/workflows/deploy.yaml)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

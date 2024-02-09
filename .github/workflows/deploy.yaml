@@ -184,3 +184,6 @@ jobs:
       - name: Abort if Cancelled # Aborts the eb create / deploy if workflow cancelled
         if: cancelled() && steps.install-eb-cli.conclusion == 'success'
         run: eb abort ${{ inputs.aws-env }}
+
+    outputs:
+      url: ${{ steps.get-env-cname.outputs.aws_env_cname}}

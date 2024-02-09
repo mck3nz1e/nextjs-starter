@@ -1,8 +1,10 @@
 import { test, expect } from "@playwright/test";
+import { testUrls } from "./urls";
 
 test.describe("App Home Page", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:3000/");
+    const url = (testUrls as any)[process.env.aws_env_cname || "local"];
+    await page.goto(url);
   });
 
   test.afterEach(async ({ page }, testInfo) => {
