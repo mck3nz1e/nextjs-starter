@@ -51,27 +51,11 @@ jobs:
           echo "::error::Cannot deploy to production using a non prodcuction environment"
           exit 1
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials # Logs into AWS using OIDC. Trust policy configured in AWS IAM
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::633718872589:role/EB-for-GitHub-Actions
           aws-region: ${{ vars.AWS_REGION }}
-
-      - uses: actions/github-script@v6
-        if: always()
-        id: get-token
-        with:
-          result-encoding: string
-          script: |
-            const token = await core.getIDToken()
-            return token
-      - run: echo ${{ steps.get-token.outputs.result }} > token.txt
-        if: always()
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: token
-          path: token.txt
 
       - name: Update Pull Request (Start) # Adds a comment to the PR if deploying to a temp PR env using /deploy
         uses: actions/github-script@v6
