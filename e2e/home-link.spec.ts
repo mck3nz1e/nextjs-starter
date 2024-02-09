@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("App Home Page", () => {
   test.beforeEach(async ({ page }) => {
-    const awsEnvCname = process.env._aws_env_cname;
+    const awsEnvCname = process.env.aws_env_cname;
 
     console.log("!!!!!!!!!");
     console.log(awsEnvCname);
