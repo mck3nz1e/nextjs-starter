@@ -1,6 +1,7 @@
 import { defineConfig } from "@playwright/test";
 const isCI = process.env.CI == "true";
 const isDeployed = process.env.aws_env_cname;
+const date = new Date();
 
 export default defineConfig({
   testDir: "./e2e",
@@ -9,7 +10,9 @@ export default defineConfig({
       "html",
       {
         open: "never",
-        outputFolder: `playwright-report/report-${new Date().toISOString()}`,
+        outputFolder: `playwright-report/report-${date[Symbol.toPrimitive](
+          "number",
+        )}`,
       },
     ],
   ],
