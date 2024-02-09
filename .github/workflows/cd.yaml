@@ -98,6 +98,13 @@ jobs:
       aws-env: ${{ vars.AWS_EB_STAGING_ENV }}
       github-env: "staging"
 
+  test-staging:
+    needs: deploy-to-staging
+    uses: ./.github/workflows/test-deploy.yaml
+    secrets: inherit
+    with:
+      aws-cname: ${{ needs.deploy-to-staging.outputs.aws-cname }}
+
   deploy-to-production: # Calls the reusable deploy workflow with production env variables
     needs: run-tests
     permissions:
