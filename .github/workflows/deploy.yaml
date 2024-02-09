@@ -1,6 +1,6 @@
 name: Deploy
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Manual call
     inputs:
       aws-env:
         description: "AWS Elastic Beanstalk Environment"
@@ -18,7 +18,7 @@ on:
         description: "PR to add report comments to"
         type: number
 
-  workflow_call:
+  workflow_call: # Called by other workflows
     inputs:
       aws-env:
         description: "AWS Elastic Beanstalk Environment"
@@ -42,9 +42,9 @@ jobs:
       pull-requests: write
     environment:
       name: ${{ inputs.github-env }}
-      url: "http://${{ steps.get-env-cname.outputs.aws_env_cname}}"
+      url: "http://${{ steps.get-env-cname.outputs.aws_env_cname}}" # Constructs the deployed url
     steps:
-      - name: Avoid deploying to production using a non production env
+      - name: Avoid deploying to production using a non production env # Aborts the deployment
         if: inputs.aws-env == vars.AWS_EB_PRODUCTION_ENV && inputs.github-env != 'production'
         run: |
           echo "::error::Cannot deploy to production using a non prodcuction environment"
@@ -57,12 +57,12 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Update Pull Request (Start)
+      - name: Update Pull Request (Start) # Adds a comment to the PR if deploying to a temp PR env using /deploy
         uses: actions/github-script@v6
         if: inputs.report-pr
         continue-on-error: true
         with:
-          script: |
+          script: | # GitHub API request
             const comment = `### ⏳ Deployment in progress...
 
             [You can monitor the progress here.](https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }})
@@ -92,7 +92,7 @@ jobs:
 
       - name: Build App
         env:
-          FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }}
+          FLAGSMITH_KEY: ${{ secrets.FLAGSMITH_KEY }} # For feature flagging
         run: npm run build
 
       - uses: actions/cache@v3
@@ -115,21 +115,21 @@ jobs:
       - name: Initialise EB
         run: eb init ${{ vars.AWS_EB_APP_NAME }} --platform "${{ vars.AWS_EB_PLATFORM }}" --region ${{ vars.AWS_REGION }}
 
-      - name: Create a New Environment
+      - name: Create a New Environment # If AWS env doesnt exist this creates a new one
         if: steps.get-env-name.outputs.aws_env == 'None' || steps.get-env-status.outputs.aws_env_status == 'Terminated'
         run: eb create ${{ inputs.aws-env }} --instance-types ${{ vars.AWS_EB_ENV_INSTANCE_TYPES }} --cname mck3nz1e-${{ inputs.aws-env }} --envvars FLAGSMITH_KEY=${{ secrets.FLAGSMITH_KEY }}
 
-      - name: Deploy if Environment Exists
+      - name: Deploy if Environment Exists # If AWS already exists this deploys it
         if: steps.get-env-name.outputs.aws_env == inputs.aws-env && steps.get-env-status.outputs.aws_env_status != 'Terminated'
         run: eb deploy ${{ inputs.aws-env}}
 
-      - name: Get AWS Env CNAME
+      - name: Get AWS Env CNAME # Gets the AWS CNAME for use in other steps
         id: get-env-cname
         run: echo "aws_env_cname=$(aws elasticbeanstalk describe-environments --application-name ${{ vars.AWS_EB_APP_NAME }} --environment-names ${{ inputs.aws-env }} --query "Environments[0].CNAME" --output text)" >> $GITHUB_OUTPUT
 
-      - name: Notify on Slack
+      - name: Notify on Slack # Notify slack channel when a build is deployed with a link to the deployed app
         uses: slackapi/slack-github-action@v1.24.0
-        continue-on-error: true
+        continue-on-error: true # Wont fail the build if this step fails
         with:
           payload: |
             {
@@ -147,12 +147,12 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-      - name: Update Pull Request (Success)
+      - name: Update Pull Request (Success) # Adds a comment to the PR if deploying to a temp PR env using /deploy was successful
         uses: actions/github-script@v6
         if: success() && inputs.report-pr
-        continue-on-error: true
+        continue-on-error: true # Wont fail the build if this step fails
         with:
-          script: |
+          script: | # GitHub API request
             const comment = `### 🚀 Deployment Completed.
 
             You can view the deployed environment here: http://${{ steps.get-env-cname.outputs.aws_env_cname }}`
@@ -164,23 +164,23 @@ jobs:
               body: comment
             })
 
-      - name: Update Pull Request (Failure)
+      - name: Update Pull Request (Failure) # Adds a comment to the PR if deploying to a temp PR env using /deploy failed
         uses: actions/github-script@v6
         if: failure() && inputs.report-pr
-        continue-on-error: true
+        continue-on-error: true # Wont fail the build if this step fails
         with:
-          script: |
+          script: | # GitHub API request
             const comment = `### 🛑 Deployment Failed.
 
             [View Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
 
-            github.rest.issues.createComment({
+            github.rest.issues.createComment({ 
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ inputs.report-pr }},
               body: comment
             })
 
-      - name: Abort if Cancelled
+      - name: Abort if Cancelled # Aborts the eb create / deploy if workflow cancelled
         if: cancelled() && steps.install-eb-cli.conclusion == 'success'
         run: eb abort ${{ inputs.aws-env }}

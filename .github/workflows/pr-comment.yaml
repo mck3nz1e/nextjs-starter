@@ -10,10 +10,10 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Add Deployment Info Comment
+      - name: Add Deployment Info Comment # Adds a comment to every open PR with instructions on how to deploy and destroy a PR env
         uses: actions/github-script@v6
         with:
-          script: |
+          script: | # GitHub API request
             github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,

@@ -40,11 +40,11 @@ jobs:
         id: get-env-status
         run: echo "aws_env_status=$(aws elasticbeanstalk describe-environments --application-name ${{vars.AWS_EB_APP_NAME}} --environment-names pull-request-${{ github.event.issue.number || github.event.pull_request.number }} --query "Environments[0].Status" --output text)" >> $GITHUB_OUTPUT
 
-      - name: Decide if Environment Needs to be Terminated
+      - name: Decide if Environment Needs to be Terminated # Checks the AWS env exists on eb and isn't already terminated
         id: check-env
         run: echo "should_terminate=${{  steps.get-env-name.outputs.aws_env != 'None' && steps.get-env-status.outputs.aws_env_status != 'Terminated' }}" >> $GITHUB_OUTPUT
 
-      - name: Destroy Environment
+      - name: Destroy Environment # If the AWS env is running then issues the terminate command
         if: steps.check-env.outputs.should_terminate == 'true'
         run: eb terminate ${{ steps.get-env-name.outputs.aws_env }} --force
 
@@ -54,7 +54,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           result-encoding: string
-          script: |
+          script: | # GitHub API request
             const response = await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -68,7 +68,7 @@ jobs:
         id: get-latest-deployment
         with:
           result-encoding: string
-          script: |
+          script: | # GitHub API request
             const response = await github.rest.repos.listDeployments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -77,11 +77,11 @@ jobs:
             });
             return response.data.length > 0 ? response.data[0].id : ""
 
-      - name: Add Inactive Status
+      - name: Add Inactive Status # Updates the deployment status on the PR to inactive once eb env is destroyed
         if: steps.get-latest-deployment.outputs.result != '' && steps.check-env.outputs.should_terminate == 'true'
         uses: actions/github-script@v6
         with:
-          script: |
+          script: | # GitHub API request
             const response = await github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -90,12 +90,12 @@ jobs:
             });
             console.log(response)
 
-      - name: Update Pull Request (Failure)
+      - name: Update Pull Request (Failure) # Adds a comment to the PR if the step to terminate the eb env failed and includes a link to the logs
         uses: actions/github-script@v6
         if: failure() && steps.check-env.outputs.should_terminate == 'true'
         continue-on-error: true
         with:
-          script: |
+          script: | # GitHub API request
             const comment = `### 🛑 Environment Termination Failed.
 
             [View Logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
@@ -107,12 +107,12 @@ jobs:
               body: comment
             })
 
-      - name: Update Pull Request (Success)
+      - name: Update Pull Request (Success) # Adds a comment to the PR when the step to terminate the eb env succeeds
         uses: actions/github-script@v6
         if: success() && steps.check-env.outputs.should_terminate == 'true'
         continue-on-error: true
         with:
-          script: |
+          script: | # GitHub API request
             const comment = `### ✅ Environment Terminated Successfully.`
 
             github.rest.issues.createComment({
