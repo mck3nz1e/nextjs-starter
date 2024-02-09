@@ -232,7 +232,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-deployed
+          name: playwright-report-${{ inputs.github-env }}
           path: playwright-report/
 
       - name: Send a Slack Message on Failure # Notify slack channel if workflow fails with a link to the workflow
