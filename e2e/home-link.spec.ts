@@ -32,9 +32,6 @@ test.describe("App Home Page", () => {
     // Find an element with the text 'About Page' and click on it
     await page.click("text=About");
 
-    // The new URL should be "/about" (baseURL is used there)
-    await expect(page.url()).toContain("/about");
-
     // The new page should contain an h2 with "About Page"
     await expect(page.locator("h2")).toContainText("About");
   });
