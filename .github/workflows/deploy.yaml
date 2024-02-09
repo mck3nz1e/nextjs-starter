@@ -232,8 +232,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-deploy-test
-          path: playwright-report-deploy-test/
+          name: playwright-report
+          path: playwright-report/
 
       - name: Send a Slack Message on Failure # Notify slack channel if workflow fails with a link to the workflow
         uses: slackapi/slack-github-action@v1.24.0
