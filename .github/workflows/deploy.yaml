@@ -40,6 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      id-token: write
     environment:
       name: ${{ inputs.github-env }}
       url: "http://${{ steps.get-env-cname.outputs.aws_env_cname}}" # Constructs the deployed url
@@ -50,11 +51,10 @@ jobs:
           echo "::error::Cannot deploy to production using a non prodcuction environment"
           exit 1
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials # Logs into AWS using OIDC. Trust policy configured in AWS IAM
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          role-to-assume: arn:aws:iam::633718872589:role/EB-for-GitHub-Actions
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Update Pull Request (Start) # Adds a comment to the PR if deploying to a temp PR env using /deploy
