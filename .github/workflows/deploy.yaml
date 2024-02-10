@@ -250,7 +250,7 @@ jobs:
                 "type": "section",
                 "text": {
                 "type": "mrkdwn",
-                "text": ":tada: Testing in deployed ${{ inputs.github-env }} environment was successful. *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} View Test Artifacts Here>*"
+                "text": ":tada: Testing in deployed ${{ inputs.github-env }} environment was successful. *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|View Test Artifacts Here>*"
                 }
                 }
             ]
