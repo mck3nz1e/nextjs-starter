@@ -143,7 +143,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "🚀 Deployment to *${{inputs.aws-env}}* environment was successfull. <http://${{ steps.get-env-cname.outputs.aws_env_cname }}|View Deployment>"
+                  "text": "🚀 Deployment to `${{inputs.aws-env}}` environment was successfull. <http://${{ steps.get-env-cname.outputs.aws_env_cname }}|View Deployment>"
                 }
                }
              ]
@@ -250,7 +250,7 @@ jobs:
                 "type": "section",
                 "text": {
                 "type": "mrkdwn",
-                "text": ":tada: Testing in deployed ${{ inputs.github-env }} environment was successful. *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|View Test Artifacts Here>*"
+                "text": ":tada: Testing in deployed `${{ inputs.github-env }}` environment was successful. *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|View Test Artifacts Here>*"
                 }
                 }
             ]
@@ -270,7 +270,7 @@ jobs:
                 "type": "section",
                 "text": {
                 "type": "mrkdwn",
-                "text": ":bug: *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} workflow run>* failed. Testing in deployed ${{ inputs.github-env }} environment failed"
+                "text": ":bug: *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} workflow run>* failed. Testing in deployed `${{ inputs.github-env }}` environment failed"
                 }
                 }
             ]
