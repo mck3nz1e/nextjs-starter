@@ -245,12 +245,15 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: playwright-report/
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Override page_url
+        id: change-page-url
+        run: echo "new_page_url=${{ steps.deployment.outputs.page_url }}${{ inputs.github-env }}/" >> $GITHUB_OUTPUT
 
       - name: Send a Slack Message on Success # Notify slack channel if workflow passes with a link to the workflow
         uses: slackapi/slack-github-action@v1.24.0
