@@ -1,5 +1,11 @@
 # mck3nz1e-next-app
 
+## 1.0.5
+
+### Patch Changes
+
+- 25c55dd: adding test results to summary page in github
+
 ## 1.0.4
 
 ### Patch Changes
