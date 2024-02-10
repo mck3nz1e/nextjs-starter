@@ -93,6 +93,7 @@ jobs:
     permissions:
       pull-requests: write
       id-token: write
+      pages: write
     uses: ./.github/workflows/deploy.yaml
     secrets: inherit
     with:
@@ -104,6 +105,7 @@ jobs:
     permissions:
       pull-requests: write
       id-token: write
+      pages: write
     uses: ./.github/workflows/deploy.yaml
     secrets: inherit
     with:
