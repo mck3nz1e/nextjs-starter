@@ -1,5 +1,11 @@
 # mck3nz1e-next-app
 
+## 1.0.3
+
+### Patch Changes
+
+- 7881643: Removed GitHub pages action
+
 ## 1.0.2
 
 ### Patch Changes
