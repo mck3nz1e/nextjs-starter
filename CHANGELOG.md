@@ -1,5 +1,11 @@
 # mck3nz1e-next-app
 
+## 1.0.4
+
+### Patch Changes
+
+- 4da42d8: bug fix
+
 ## 1.0.3
 
 ### Patch Changes
