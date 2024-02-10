@@ -278,3 +278,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Display URL
+        run: echo "aws_env_cname=https://google.co.uk"
