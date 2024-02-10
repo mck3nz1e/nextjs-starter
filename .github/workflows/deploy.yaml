@@ -191,6 +191,9 @@ jobs:
   test-deployed-env: # Runs playwright test on deployed env
     runs-on: ubuntu-latest
     needs: deploy
+    permissions:
+      id-token: write
+      pages: write
     env:
       aws_env_cname: ${{ needs.deploy.outputs.deployed-url }}
     if: ${{ needs.deploy.result == 'success'}}
