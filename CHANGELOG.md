@@ -1,5 +1,11 @@
 # mck3nz1e-next-app
 
+## 1.0.2
+
+### Patch Changes
+
+- d1a0087: Override page url
+
 ## 1.0.1
 
 ### Patch Changes
