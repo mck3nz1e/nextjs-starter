@@ -41,6 +41,8 @@ jobs:
     permissions:
       pull-requests: write
       id-token: write
+      pages: write
+
     environment:
       name: ${{ inputs.github-env }}
       url: "http://${{ steps.get-env-cname.outputs.aws_env_cname}}" # Constructs the deployed url
