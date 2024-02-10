@@ -239,22 +239,6 @@ jobs:
           name: playwright-report-${{ inputs.github-env }}
           path: playwright-report/
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: playwright-report/
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Override page_url
-        id: change-page-url
-        run: echo "new_page_url=${{ steps.deployment.outputs.page_url }}${{ inputs.github-env }}/" >> $GITHUB_OUTPUT
-
       - name: Send a Slack Message on Success # Notify slack channel if workflow passes with a link to the workflow
         uses: slackapi/slack-github-action@v1.24.0
         if: success()
@@ -266,7 +250,7 @@ jobs:
                 "type": "section",
                 "text": {
                 "type": "mrkdwn",
-                "text": ":tada: *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} workflow run>* completed. Testing in deployed ${{ inputs.github-env }} environment was successful"
+                "text": ":tada: Testing in deployed ${{ inputs.github-env }} environment was successful. *<https://github.com/${{github.repository}}/actions/runs/${{ github.run_id }}|${{ github.workflow }} View Test Artifacts Here>*"
                 }
                 }
             ]
