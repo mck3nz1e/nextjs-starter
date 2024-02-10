@@ -1,14 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("App Home Page", () => {
+test.describe("App Home Pag Shakedown Tests", () => {
   test.beforeEach(async ({ page }) => {
-    const awsEnvCname = process.env.aws_env_cname;
+    const awsEnvCname = process.env.aws_env_cname; // Deployed URl string passed from GitHub workflow env
     const isDeployed = process.env.aws_env_cname !== undefined; // Check if the variable is defined
 
     if (isDeployed) {
+      // If the env has been deployed then use deployed AWS URL
       let url = awsEnvCname as string;
       await page.goto(url);
     } else {
+      // Use the local host
       await page.goto("http://localhost:3000");
     }
   });
